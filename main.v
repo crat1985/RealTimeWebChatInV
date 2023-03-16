@@ -78,6 +78,6 @@ fn client_connected(mut c websocket.ServerClient) !bool {
 	if c.resource_name == "/login" || c.resource_name == "/register" {
 		return false
 	}
-	println("New websocket server connection : ${c.client.conn.peer_addr()!}")
+	println("New websocket connection : ${c.client.conn.peer_addr()!}")
 	return true
 }
