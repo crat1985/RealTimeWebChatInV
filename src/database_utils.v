@@ -15,7 +15,8 @@ fn (mut app App) init_databases() {
 fn (mut app App) get_account_by_username(username string) !Account {
 	account := sql app.db {
 		select from Account where username == username
-	} or {
+	}
+	if account.len == 0 {
 		return Account{id: 0}
 	}
 	
@@ -51,11 +52,17 @@ fn (mut app App) insert_account(username string, clear_password string) !Account
 	mut token := ""
 
 	for {
-		token = rand.ascii(256)
+		token = rand.ascii(128)
 
-		_ := sql app.db {
+		account := sql app.db {
 			select from Account where token == token
-		} or {
+		}
+
+		if account.len == 0 {
+			break
+		}
+
+		if account[0].id == 0 {
 			break
 		}
 	}
@@ -71,11 +78,16 @@ fn (mut app App) insert_account(username string, clear_password string) !Account
 		insert account into Account
 	}
 
-	return app.get_account_by_username(username)
+	return app.get_account_by_token(token)
 }
 
 fn (mut app App) get_account_by_token(token string) Account {
-	return sql app.db {
-		select from Account where token == token limit 1
+	accounts := sql app.db {
+		select from Account where token == token
 	}
+	println(accounts)
+	if accounts.len == 0 {
+		return Account{id: 0}
+	}
+	return accounts[0]
 }

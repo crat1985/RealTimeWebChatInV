@@ -59,13 +59,23 @@ fn main() {
 
 ['/']
 pub fn (mut app App) index() vweb.Result {
-	app.get_cookie('session') or { return app.redirect('/login') }
+	cookie := app.get_cookie('session') or { return app.redirect('/login') }
+	println(cookie)
+	println(cookie.len)
+	account := app.get_account_by_token(cookie)
+	if account.id == 0 {
+		return app.redirect("/login")
+	}
+	username := app.get_account_by_token(cookie).username
 	return $vweb.html()
 }
 
 ['/login']
 pub fn (mut app App) page_login() vweb.Result {
-	app.get_cookie('session') or { return $vweb.html() }
+	cookie := app.get_cookie('session') or { return $vweb.html() }
+	if app.get_account_by_token(cookie).id == 0 {
+		return $vweb.html()
+	}
 	return app.redirect('/')
 }
 
@@ -79,7 +89,8 @@ pub fn (mut app App) post_login(username string, password string) vweb.Result {
 		return app.redirect('/login?err=Bad username or password !')
 	}
 	if sha256.hexhash(account.salt+sha256.hexhash(password)) == account.password {
-		return app.ok("SUCCESS")
+		app.set_cookie(name: "session", value: account.token)
+		return app.redirect("/")
 	} else {
 		return app.redirect('/login?err=Bad username or password !')
 	}
@@ -87,13 +98,16 @@ pub fn (mut app App) post_login(username string, password string) vweb.Result {
 
 ['/register']
 pub fn (mut app App) page_register() vweb.Result {
-	app.get_cookie('session') or { return $vweb.html() }
+	cookie := app.get_cookie('session') or { return $vweb.html() }
+	if app.get_account_by_token(cookie).id == 0 {
+		return $vweb.html()
+	}
 	return app.redirect('/')
 }
 
 ['/register'; post]
 pub fn (mut app App) post_register(username string, password string) vweb.Result {
-	if !app.account_exists(username) {
+	if app.account_exists(username) {
 		return app.redirect('/register?err=Account already exists !')
 	}
 	if is_username_valid(username) && password.len >= 8 {
@@ -107,6 +121,9 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 }
 
 fn client_connected(mut c websocket.ServerClient) !bool {
-	println('New websocket connection : ${c.client.conn.peer_addr()!}')
-	return true
+	if c.resource_name in ["/"] {
+		println('New websocket connection : ${c.client.conn.peer_addr()!}')
+		return true
+	}
+	return false
 }
