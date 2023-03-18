@@ -8,10 +8,10 @@ import crypto.sha256
 struct Account {
 	id int [nonnull; primary]
 pub mut:
-	username   string [nonnull]
+	username string [nonnull]
 	password string [nonnull]
 	salt     string [nonnull]
-	token string [nonnull]
+	token    string [nonnull]
 }
 
 struct App {
@@ -27,7 +27,7 @@ const (
 )
 
 pub fn (app &App) before_request() {
-	println("New vweb connection : ${app.ip()}")
+	println('New vweb connection : ${app.ip()}')
 }
 
 fn main() {
@@ -42,9 +42,7 @@ fn main() {
 
 	spawn vweb.run(app, port)
 
-	websocket_server.on_connect(client_connected) or {
-		panic(err)
-	}
+	websocket_server.on_connect(client_connected) or { panic(err) }
 
 	websocket_server.on_message(fn (mut _ websocket.Client, msg &websocket.Message) ! {
 		message := msg.payload.bytestr()
@@ -59,14 +57,16 @@ fn main() {
 
 ['/']
 pub fn (mut app App) index() vweb.Result {
-	cookie := app.get_cookie('session') or { return app.redirect('/login') }
-	println(cookie)
-	println(cookie.len)
+	cookie := app.get_cookie('session') or {
+		dump('error')
+		return app.redirect('/login')
+	}
 	account := app.get_account_by_token(cookie)
 	if account.id == 0 {
-		return app.redirect("/login")
+		dump('error')
+		return app.redirect('/login')
 	}
-	username := app.get_account_by_token(cookie).username
+	username := account.username
 	return $vweb.html()
 }
 
@@ -81,16 +81,17 @@ pub fn (mut app App) page_login() vweb.Result {
 
 ['/login'; post]
 pub fn (mut app App) post_login(username string, password string) vweb.Result {
+	dump('New login attempt')
 	account := app.get_account_by_username(username) or {
-		eprintln(err)
-		return app.redirect("/login")
+		dump(err)
+		return app.redirect('/login')
 	}
 	if account.id == 0 {
 		return app.redirect('/login?err=Bad username or password !')
 	}
-	if sha256.hexhash(account.salt+sha256.hexhash(password)) == account.password {
-		app.set_cookie(name: "session", value: account.token)
-		return app.redirect("/")
+	if sha256.hexhash(account.salt + sha256.hexhash(password)) == account.password {
+		app.set_cookie(name: 'session', value: account.token)
+		return app.redirect('/')
 	} else {
 		return app.redirect('/login?err=Bad username or password !')
 	}
@@ -112,16 +113,16 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 	}
 	if is_username_valid(username) && password.len >= 8 {
 		account := app.insert_account(username, password) or {
-			return app.redirect("/register?err=$err")
+			return app.redirect('/register?err=${err}')
 		}
-		app.set_cookie(name: "session", value: account.token)
-		return app.redirect("/success")
+		app.set_cookie(name: 'session', value: account.token)
+		return app.redirect('/success')
 	}
-	return app.redirect("/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long")
+	return app.redirect('/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long')
 }
 
 fn client_connected(mut c websocket.ServerClient) !bool {
-	if c.resource_name in ["/"] {
+	if c.resource_name == '/' {
 		println('New websocket connection : ${c.client.conn.peer_addr()!}')
 		return true
 	}

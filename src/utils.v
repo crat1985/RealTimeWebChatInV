@@ -5,7 +5,7 @@ fn is_username_valid(username string) bool {
 		if index == 0 && !c.is_letter() {
 			return false
 		}
-		if c.is_alnum() || c.ascii_str() == "_" {
+		if c.is_alnum() || c.ascii_str() == '_' {
 			continue
 		}
 		return false

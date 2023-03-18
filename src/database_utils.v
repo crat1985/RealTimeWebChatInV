@@ -17,11 +17,13 @@ fn (mut app App) get_account_by_username(username string) !Account {
 		select from Account where username == username
 	}
 	if account.len == 0 {
-		return Account{id: 0}
+		return Account{
+			id: 0
+		}
 	}
-	
+
 	if account.len > 1 {
-		return error("Multiple accounts with same username ! This should never happen")
+		return error('Multiple accounts with same username ! This should never happen')
 	}
 	return account[0]
 }
@@ -44,15 +46,15 @@ fn (mut app App) account_exists(username string) bool {
 
 fn (mut app App) insert_account(username string, clear_password string) !Account {
 	if app.account_exists(username) {
-		return error("Account already exists !")
+		return error('Account already exists !')
 	}
 
 	salt := rand.ascii(8)
 
-	mut token := ""
+	mut token := ''
 
 	for {
-		token = rand.ascii(128)
+		token = rand.ascii(90)
 
 		account := sql app.db {
 			select from Account where token == token
@@ -69,7 +71,7 @@ fn (mut app App) insert_account(username string, clear_password string) !Account
 
 	account := Account{
 		username: username
-		password: sha256.hexhash(salt+sha256.hexhash(clear_password))
+		password: sha256.hexhash(salt + sha256.hexhash(clear_password))
 		salt: salt
 		token: token
 	}
@@ -87,7 +89,9 @@ fn (mut app App) get_account_by_token(token string) Account {
 	}
 	println(accounts)
 	if accounts.len == 0 {
-		return Account{id: 0}
+		return Account{
+			id: 0
+		}
 	}
 	return accounts[0]
 }
