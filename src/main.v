@@ -58,12 +58,10 @@ fn main() {
 ['/']
 pub fn (mut app App) index() vweb.Result {
 	cookie := app.get_cookie('session') or {
-		dump('error')
 		return app.redirect('/login')
 	}
 	account := app.get_account_by_token(cookie)
 	if account.id == 0 {
-		dump('error')
 		return app.redirect('/login')
 	}
 	username := account.username
@@ -81,9 +79,8 @@ pub fn (mut app App) page_login() vweb.Result {
 
 ['/login'; post]
 pub fn (mut app App) post_login(username string, password string) vweb.Result {
-	dump('New login attempt')
 	account := app.get_account_by_username(username) or {
-		dump(err)
+		eprintln(err)
 		return app.redirect('/login')
 	}
 	if account.id == 0 {
