@@ -113,7 +113,7 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 			return app.redirect('/register?err=${err}')
 		}
 		app.set_cookie(name: 'session', value: account.token)
-		return app.redirect('/success')
+		return app.redirect('/')
 	}
 	return app.redirect('/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long')
 }
