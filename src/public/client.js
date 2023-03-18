@@ -1,4 +1,4 @@
-const socket = new WebSocket("ws://localhost:8080")
+const socket = new WebSocket("ws://"+location.host+":8080")
 
 socket.addEventListener("open", (e) => {
     console.log("Connected to server !")

@@ -5,7 +5,7 @@ import rand
 import crypto.sha256
 
 fn (mut app App) init_databases() {
-	app.db = sqlite.connect('chat') or { panic(err) }
+	app.db = sqlite.connect('chat.db') or { panic(err) }
 
 	sql app.db {
 		create table Account
