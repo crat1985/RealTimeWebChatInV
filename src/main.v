@@ -5,6 +5,7 @@ import vweb
 import db.sqlite
 import crypto.sha256
 
+
 struct Account {
 	id int [nonnull; primary]
 pub mut:
@@ -23,7 +24,10 @@ pub mut:
 
 const (
 	websocket_port = 8080
-	port           = 8888
+	port           = 8000
+	favicon = $embed_file("src/public/favicon.ico", .zlib)
+	client_js = $embed_file("src/public/client.js", .zlib)
+	client_css = $embed_file("src/public/client.css", .zlib)
 )
 
 pub fn (app &App) before_request() {
@@ -53,6 +57,23 @@ fn main() {
 	})
 
 	websocket_server.listen() or { panic('Error while listening : ${err}') }
+}
+
+["/favicon.ico"]
+pub fn (mut app App) favicon() vweb.Result {
+	return app.ok(favicon.to_string())
+}
+
+['/client.js']
+pub fn (mut app App) client_js() vweb.Result {
+	app.add_header("Content-Type", "text/js")
+	return app.ok(client_js.to_string())
+}
+
+['/client.css']
+pub fn (mut app App) client_css() vweb.Result {
+	app.add_header("Content-Type", "text/css")
+	return app.ok(client_css.to_string())
 }
 
 ['/']
