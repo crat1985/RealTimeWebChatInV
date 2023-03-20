@@ -87,7 +87,6 @@ fn (mut app App) get_account_by_token(token string) Account {
 	accounts := sql app.db {
 		select from Account where token == token
 	}
-	dump(accounts)
 	if accounts.len == 0 {
 		return Account{
 			id: 0
