@@ -51,20 +51,20 @@ fn (mut app App) insert_account(username string, clear_password string) !Account
 
 	salt := rand.ascii(8)
 
+
 	mut token := ''
 
 	for {
-		token = rand.ascii(90)
+		token = rand_printable_ascii(token_len) or {
+			dump(err)
+			continue
+		}
 
 		account := sql app.db {
 			select from Account where token == token
 		}
 
-		if account.len == 0 {
-			break
-		}
-
-		if account[0].id == 0 {
+		if account.len == 0 || account[0].id == 0 {
 			break
 		}
 	}
@@ -87,7 +87,7 @@ fn (mut app App) get_account_by_token(token string) Account {
 	accounts := sql app.db {
 		select from Account where token == token
 	}
-	println(accounts)
+	dump(accounts)
 	if accounts.len == 0 {
 		return Account{
 			id: 0

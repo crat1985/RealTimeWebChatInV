@@ -28,6 +28,7 @@ const (
 	favicon = $embed_file("src/public/favicon.ico", .zlib)
 	client_js = $embed_file("src/public/client.js", .zlib)
 	client_css = $embed_file("src/public/client.css", .zlib)
+	token_len = 256
 )
 
 pub fn (app &App) before_request() {
@@ -81,10 +82,17 @@ pub fn (mut app App) index() vweb.Result {
 	cookie := app.get_cookie('session') or {
 		return app.redirect('/login')
 	}
+	if cookie.len != token_len {
+		dump("Bad cookie length")
+		return app.redirect("/login")
+	}
+	dump("New user with token : ${app.ip()}")
 	account := app.get_account_by_token(cookie)
 	if account.id == 0 {
+		dump("Invalid token : ${app.ip()}")
 		return app.redirect('/login')
 	}
+	dump("Valid token : ${app.ip()}")
 	username := account.username
 	return $vweb.html()
 }
@@ -134,6 +142,7 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 			return app.redirect('/register?err=${err}')
 		}
 		app.set_cookie(name: 'session', value: account.token)
+		cookie := app.get_cookie("session") or {""}
 		return app.redirect('/')
 	}
 	return app.redirect('/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long')

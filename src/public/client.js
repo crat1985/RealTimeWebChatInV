@@ -1,4 +1,4 @@
-const socket = new WebSocket("wss://chat.mcrk.xyz:8443")
+const socket = new WebSocket("wss://"+location.hostname+":8443")
 
 socket.addEventListener("open", (e) => {
     console.log("Connected to server !")
