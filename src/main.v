@@ -50,11 +50,7 @@ fn main() {
 	websocket_server.on_connect(client_connected) or { panic(err) }
 
 	websocket_server.on_message(fn (mut _ websocket.Client, msg &websocket.Message) ! {
-		message := msg.payload.bytestr()
-		if message.trim_space().is_blank() {
-			return
-		}
-		println(message)
+		//TODO handle message
 	})
 
 	websocket_server.listen() or { panic('Error while listening : ${err}') }
