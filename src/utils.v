@@ -27,3 +27,16 @@ fn rand_printable_ascii(length int) !string {
 	}
 	return final
 }
+
+fn (mut app App) is_connected() !Account {
+	cookie := app.get_cookie('session') or { return error("") }
+	if cookie.len != token_len {
+		return error("")
+	}
+	account := app.get_account_by_token(cookie)
+	if account.id == 0 {
+		app.set_cookie(name: "session", value: "")
+		return error("")
+	}
+	return account
+}

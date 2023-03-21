@@ -26,7 +26,7 @@ const (
 	token_len      = 256
 )
 
-pub fn (app &App) before_request() {
+pub fn (mut app App) before_request() {
 	println('New vweb connection : ${app.ip()}')
 }
 
