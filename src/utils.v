@@ -2,7 +2,7 @@ module main
 
 import rand
 
-const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split("")
+const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('')
 
 fn is_username_valid(username string) bool {
 	for index, c in username {
@@ -18,12 +18,12 @@ fn is_username_valid(username string) bool {
 }
 
 fn rand_printable_ascii(length int) !string {
-	if length<1 {
-		return error("0 forbidden")
+	if length < 1 {
+		return error('0 forbidden')
 	}
-	mut final := ""
-	for _ in 0..length {
-		final += rand.element(characters) or {return err}
+	mut final := ''
+	for _ in 0 .. length {
+		final += rand.element(characters) or { return err }
 	}
 	return final
 }

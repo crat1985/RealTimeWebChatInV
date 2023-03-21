@@ -51,7 +51,6 @@ fn (mut app App) insert_account(username string, clear_password string) !Account
 
 	salt := rand.ascii(8)
 
-
 	mut token := ''
 
 	for {

@@ -20,11 +20,10 @@ pub mut:
 	db    sqlite.DB
 }
 
-
 const (
 	websocket_port = 8080
 	port           = 8000
-	token_len = 256
+	token_len      = 256
 )
 
 pub fn (app &App) before_request() {
@@ -57,5 +56,5 @@ fn client_connected(mut c websocket.ServerClient) !bool {
 }
 
 fn message_received(mut _ websocket.Client, msg &websocket.Message) ! {
-	//TODO handle message
+	// TODO handle message
 }

@@ -5,11 +5,9 @@ import crypto.sha256
 
 ['/']
 pub fn (mut app App) index() vweb.Result {
-	cookie := app.get_cookie('session') or {
-		return app.redirect('/login')
-	}
+	cookie := app.get_cookie('session') or { return app.redirect('/login') }
 	if cookie.len != token_len {
-		return app.redirect("/login")
+		return app.redirect('/login')
 	}
 	account := app.get_account_by_token(cookie)
 	if account.id == 0 {
