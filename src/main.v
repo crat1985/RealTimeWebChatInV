@@ -27,7 +27,7 @@ const (
 )
 
 pub fn (mut app App) before_request() {
-	println('New vweb connection : ${app.ip()}')
+	println('New vweb connection from ${app.ip()} : ${app.req.method} ${app.req.url}')
 }
 
 fn main() {

@@ -15,9 +15,9 @@ pub fn (mut app App) index() vweb.Result {
 ['/login']
 pub fn (mut app App) page_login() vweb.Result {
 	app.is_connected() or {
-		return app.redirect("/")
+		return $vweb.html()
 	}
-	return $vweb.html()
+	return app.redirect("/")
 }
 
 ['/login'; post]
@@ -40,9 +40,9 @@ pub fn (mut app App) post_login(username string, password string) vweb.Result {
 ['/register']
 pub fn (mut app App) page_register() vweb.Result {
 	app.is_connected() or {
-		return app.redirect("/")
+		return $vweb.html()
 	}
-	return $vweb.html()
+	return app.redirect("/")
 }
 
 ['/register'; post]
