@@ -7,7 +7,7 @@
     font-weight: bold;
     color: white;
     text-decoration: none;
-    transition: .25s ease;
+    transition: .5s ease;
 }
 .disconnect_link:hover {
     background: blue;
