@@ -1,6 +1,14 @@
-.disconnect_button {
+.disconnect_link {
     position: absolute;
     top: 0;
     right: 0;
-    margin: 16px;
+    margin: 10px;
+    padding: 6px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: .25s ease;
+}
+.disconnect_link:hover {
+    background: blue;
 }

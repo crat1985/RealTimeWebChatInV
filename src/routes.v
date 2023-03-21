@@ -59,3 +59,9 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 	}
 	return app.redirect('/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long')
 }
+
+["/logout"]
+pub fn (mut app App) logout() vweb.Result {
+	app.set_cookie(name: "session", value: "")
+	return app.redirect("/login")
+}
