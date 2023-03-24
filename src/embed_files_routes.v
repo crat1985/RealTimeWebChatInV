@@ -17,13 +17,13 @@ pub fn (mut app App) favicon() vweb.Result {
 
 ['/client.js']
 pub fn (mut app App) client_js() vweb.Result {
-	app.add_header('Content-Type', 'text/js')
+	app.add_header('Content-Type', 'text/javascript')
 	return app.ok(client_js.to_string())
 }
 
 ['/index.js']
 pub fn (mut app App) index_js() vweb.Result {
-	app.add_header('Content-Type', 'text/js')
+	app.add_header('Content-Type', 'text/javascript')
 	return app.ok(index_js.to_string())
 }
 
