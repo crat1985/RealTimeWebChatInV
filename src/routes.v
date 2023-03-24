@@ -5,7 +5,7 @@ import crypto.sha256
 
 ['/']
 pub fn (mut app App) index() vweb.Result {
-	account := app.is_connected() or {
+	account := app.get_account() or {
 		return app.redirect("/login")
 	}
 	username := account.username
@@ -14,7 +14,7 @@ pub fn (mut app App) index() vweb.Result {
 
 ['/login']
 pub fn (mut app App) page_login() vweb.Result {
-	app.is_connected() or {
+	app.get_account() or {
 		return $vweb.html()
 	}
 	return app.redirect("/")
@@ -39,10 +39,10 @@ pub fn (mut app App) post_login(username string, password string) vweb.Result {
 
 ['/register']
 pub fn (mut app App) page_register() vweb.Result {
-	app.is_connected() or {
+	app.get_account() or {
 		return $vweb.html()
 	}
-	return app.redirect("/")
+	return $vweb.html()
 }
 
 ['/register'; post]

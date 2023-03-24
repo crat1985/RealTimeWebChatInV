@@ -7,12 +7,16 @@
     <script src="/client.js" defer></script>
 </head>
 <body>
-    <h1>Login</h1>
     <form action="/login" method="POST">
-        <input type="text" name="username"><br>
-        <input type="password" name="password"><br>
+        <h1>Login</h1>
+        <label>Username
+            <input type="text" name="username">
+        </label><br><br>
+        <label>Password
+            <input type="password" name="password">
+        </label><br><br>
         <input type="submit" value="Login">
+        <p><a href="/register">Register</a></p>
     </form>
-    <a href="/register">Register</a>
 </body>
 </html>

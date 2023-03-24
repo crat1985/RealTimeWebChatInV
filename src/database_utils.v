@@ -29,9 +29,10 @@ fn (mut app App) get_account_by_username(username string) !Account {
 }
 
 fn (mut app App) get_account_by_id(id int) Account {
-	return sql app.db {
-		select from Account where id == id limit 1
+	accounts := sql app.db {
+		select from Account where id == id
 	}
+	return accounts[0] or {Account{id: 0}}
 }
 
 fn (mut app App) account_exists(username string) bool {

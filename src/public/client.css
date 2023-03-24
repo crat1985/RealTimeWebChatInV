@@ -1,3 +1,7 @@
+* {
+    font-family: 'Jetbrains Mono', monospace;
+}
+
 body {
     box-sizing: border-box;
     background: black;
@@ -6,4 +10,15 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 16px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+form * {
+    margin-bottom: 5px;
 }
