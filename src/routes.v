@@ -5,19 +5,15 @@ import crypto.sha256
 
 ['/']
 pub fn (mut app App) index() vweb.Result {
-	account := app.get_account() or {
-		return app.redirect("/login")
-	}
+	account := app.get_account() or { return app.redirect('/login') }
 	username := account.username
 	return $vweb.html()
 }
 
 ['/login']
 pub fn (mut app App) page_login() vweb.Result {
-	app.get_account() or {
-		return $vweb.html()
-	}
-	return app.redirect("/")
+	app.get_account() or { return $vweb.html() }
+	return app.redirect('/')
 }
 
 ['/login'; post]
@@ -39,9 +35,7 @@ pub fn (mut app App) post_login(username string, password string) vweb.Result {
 
 ['/register']
 pub fn (mut app App) page_register() vweb.Result {
-	app.get_account() or {
-		return $vweb.html()
-	}
+	app.get_account() or { return $vweb.html() }
 	return $vweb.html()
 }
 
@@ -52,7 +46,7 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 	}
 	if is_username_valid(username) && password.len >= 8 {
 		account := app.insert_account(username, password) or {
-			return app.redirect('/register?err=$err')
+			return app.redirect('/register?err=${err}')
 		}
 		app.set_cookie(name: 'session', value: account.token)
 		return app.redirect('/')
@@ -60,8 +54,8 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 	return app.redirect('/register?err=Username must begin by a letter and contain only letters, numbers and underscores and password must be at least 8 characters long')
 }
 
-["/logout"]
+['/logout']
 pub fn (mut app App) logout() vweb.Result {
-	app.set_cookie(name: "session", value: "")
-	return app.redirect("/login")
+	app.set_cookie(name: 'session', value: '')
+	return app.redirect('/login')
 }

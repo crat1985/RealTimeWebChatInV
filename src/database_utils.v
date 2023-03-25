@@ -32,7 +32,11 @@ fn (mut app App) get_account_by_id(id int) Account {
 	accounts := sql app.db {
 		select from Account where id == id
 	}
-	return accounts[0] or {Account{id: 0}}
+	return accounts[0] or {
+		Account{
+			id: 0
+		}
+	}
 }
 
 fn (mut app App) account_exists(username string) bool {

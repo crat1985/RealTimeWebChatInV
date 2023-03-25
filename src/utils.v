@@ -29,28 +29,26 @@ fn rand_printable_ascii(length int) !string {
 }
 
 fn (mut app App) get_account() !Account {
-	cookie := app.get_cookie('session') or { return error("") }
+	cookie := app.get_cookie('session') or { return error('') }
 	if cookie.len != token_len {
-		return error("")
+		return error('')
 	}
 	account := app.get_account_by_token(cookie)
 	if account.id == 0 {
-		app.set_cookie(name: "session", value: "")
-		return error("")
+		app.set_cookie(name: 'session', value: '')
+		return error('')
 	}
 	return account
 }
 
 fn (mut app App) is_connected() bool {
-	cookie := app.get_cookie('session') or {
-		return false
-	}
+	cookie := app.get_cookie('session') or { return false }
 	if cookie.len != token_len {
-		app.set_cookie(name: "session", value: "")
+		app.set_cookie(name: 'session', value: '')
 		return false
 	}
 	if app.get_account_by_token(cookie).id == 0 {
-		app.set_cookie(name: "session", value: "")
+		app.set_cookie(name: 'session', value: '')
 		return false
 	}
 	return true
