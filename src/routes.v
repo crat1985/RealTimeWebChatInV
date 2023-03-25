@@ -19,7 +19,7 @@ pub fn (mut app App) page_login() vweb.Result {
 ['/login'; post]
 pub fn (mut app App) post_login(username string, password string) vweb.Result {
 	account := app.get_account_by_username(username) or {
-		eprintln(err)
+		app.info(err.msg())
 		return app.redirect('/login?err=This should never happen, please report this issue on Github !')
 	}
 	if account.id == 0 {

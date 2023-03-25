@@ -16,3 +16,4 @@ bin/
 .vscode/
 *.iml
 chat.db
+logs
