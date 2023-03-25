@@ -2,21 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Se connecter</title>
     @css '/client.css'
     <script src="/client.js" defer></script>
 </head>
 <body>
     <form action="/login" method="POST">
-        <h1>Login</h1>
-        <label>Username
-            <input type="text" name="username">
-        </label><br><br>
-        <label>Password
-            <input type="password" name="password">
-        </label><br><br>
-        <input type="submit" value="Login">
-        <p><a href="/register">Register</a></p>
+        <h1>Se connecter</h1>
+        <label for="username">Pseudo</label>
+        <input type="text" name="username" required><br><br>
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" required><br><br>
+        <input type="submit" value="Se connecter">
+        <p><a href="/register">Créer un compte</a></p>
     </form>
 </body>
 </html>

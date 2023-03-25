@@ -2,24 +2,21 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Register</title>
+  <title>Créer un compte</title>
   @css '/client.css'
   <script src="/client.js" defer></script>
 </head>
 <body>
 <form action="/register" method="POST">
   <h1>Register</h1>
-  <label>Username
-    <input type="text" name="username">
-  </label><br><br>
-  <label>Password
-    <input type="password" name="password">
-  </label><br><br>
-  <label>Confirm password
-    <input type="password" name="confirm-password">
-  </label><br><br>
-  <input type="submit" value="Register">
-  <p><a href="/login">Already have an account ?</a></p>
+  <label for="username">Pseudo</label>
+  <input type="text" name="username" required><br><br>
+  <label for="password">Mot de passe</label>
+  <input type="password" name="password" required><br><br>
+  <label for="confirm-password">Confirmer mot de passe</label>
+  <input type="password" name="confirm-password"><br><br>
+  <input type="submit" value="Créer un compte">
+  <p><a href="/login">Déjà incrit ?</a></p>
 </form>
 </body>
 </html>

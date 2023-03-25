@@ -52,7 +52,7 @@ pub fn (mut app App) post_register(username string, password string) vweb.Result
 	}
 	if is_username_valid(username) && password.len >= 8 {
 		account := app.insert_account(username, password) or {
-			return app.redirect('/register?err=${err}')
+			return app.redirect('/register?err=$err')
 		}
 		app.set_cookie(name: 'session', value: account.token)
 		return app.redirect('/')
